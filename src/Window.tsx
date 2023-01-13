@@ -19,7 +19,6 @@ const Window = ({children, width=300, title}: Props) => {
         </div>
       </div>
       <div className="window-body">
-        <p>There's so much room for activities!</p>
         {children}
       </div>
     </div>
