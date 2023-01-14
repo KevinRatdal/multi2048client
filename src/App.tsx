@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
-import "xp.css/dist/xp.css"
+import "xp.css/dist/98.css"
 import Window from './Window'
+import GameView from './GameView'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,8 +17,7 @@ function App() {
         <button>Click Me</button>
       </Window> 
       <Window title={"Multi-2048"}>
-        <div>Test</div>
-        <button>Click Me</button>
+        <GameView />
       </Window> 
     </div>
   )
