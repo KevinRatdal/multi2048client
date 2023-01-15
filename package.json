@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postversion": "echo $(git tag --points-at HEAD)"
   },
   "dependencies": {
     "react": "^18.2.0",
