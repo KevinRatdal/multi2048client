@@ -11,12 +11,10 @@ export class Game {
     this.grid = [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
-      [0, 0, 8, 0],
+      [0, 0, 0, 0],
       [0, 0, 0, 0]
     ]
     this.start()
-
-    console.log(JSON.stringify(this._handleSectionMove([0, 2, 2, 2])))
   }
 
   start() {
@@ -34,6 +32,10 @@ export class Game {
 
   getGrid() {
     return this.grid
+  }
+
+  getScore() {
+    return this.score
   }
 
   _getEmptyPositions(): any[] {
@@ -179,6 +181,8 @@ export class Game {
           changed = true;
         } else if (newSection[index] === newSection[next]) {
           newSection[index] = newSection[index] * 2;
+          console.log("inc SCore")
+          this.score += newSection[index]
           newSection[next] = 0;
           changed = true;
         }

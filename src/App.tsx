@@ -19,6 +19,9 @@ function App() {
       <Window title={"Multi-2048"}>
         <GameView />
       </Window> 
+      <Window title={"Multi-2048"}>
+        <GameView />
+      </Window> 
     </div>
   )
 }

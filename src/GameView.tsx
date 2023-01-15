@@ -4,15 +4,18 @@ import Grid from './Grid'
 
 const GameView = () => {
   const [grid, setGrid] = useState<number[][] | null>(null)
+  const [gScore, setScore] = useState<number>(0)
   let gameRef = useRef<Game | null>(null)
   useEffect(() => {
     gameRef.current = new Game()
-
+    let gridValue = gameRef.current.getGrid()
+    setGrid([...gridValue])
+    let gameScore = gameRef.current.getScore()
+    setScore(gameScore)
   }, [])
 
   const handleView = () => {
     if (gameRef.current !== null) {
-
       gameRef.current.viewGrid()
     }
   }
@@ -22,6 +25,8 @@ const GameView = () => {
       let gridValue = gameRef.current.getGrid()
       console.log(JSON.stringify(gridValue))
       setGrid([...gridValue])
+      let gameScore = gameRef.current.getScore()
+      setScore(gameScore)
     }
   }
   const handleSetAndRenderView = () => {
@@ -47,7 +52,7 @@ const GameView = () => {
 
   return (
     <div>
-      GameView
+      GameView - Score: {gScore} 
       <div>
         {(grid !== null) && <Grid grid={grid} />}
       </div>
