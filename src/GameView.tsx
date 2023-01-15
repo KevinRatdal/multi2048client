@@ -6,6 +6,7 @@ const GameView = () => {
   const [grid, setGrid] = useState<number[][] | null>(null)
   const [gScore, setScore] = useState<number>(0)
   const [debug, setDebug] = useState(false)
+  const [gameId, setGameId] = useState(0)
   let gameRef = useRef<Game | null>(null)
   let containerRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -14,7 +15,7 @@ const GameView = () => {
     setGrid([...gridValue])
     let gameScore = gameRef.current.getScore()
     setScore(gameScore)
-  }, [])
+  }, [gameId])
 
   useEffect(() => {
     if (containerRef.current !== null) {
@@ -98,7 +99,10 @@ const GameView = () => {
         </div>
         <button onClick={() => handleMove('down')}>Down</button>
       </div>
-      <button onClick={() => setDebug(prev => !prev)}>{debug ? 'HIDE' : 'SHOW'} DEBUG MENU</button>
+      <div style={{display: 'flex', justifyContent: 'center', gap: '16px'}}>
+        <button onClick={() => setDebug(prev => !prev)}>{debug ? 'HIDE' : 'SHOW'} DEBUG MENU</button>
+        <button onClick={() => setGameId(prevGameId => prevGameId + 1)}> Restart</button>
+      </div>
 
     </div>
   )
