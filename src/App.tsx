@@ -9,13 +9,13 @@ function App() {
 
   return (
     <div className="App">
-      <Window title={"Multi-2048"}>
+      {/* <Window title={"Multi-2048"}>
         <p>There's so much room for activities!</p>
       </Window>
       <Window title={"Multi-2048"}>
         <div>Test</div>
         <button>Click Me</button>
-      </Window> 
+      </Window>  */}
       <Window title={"Multi-2048"}>
         <GameView />
       </Window> 
