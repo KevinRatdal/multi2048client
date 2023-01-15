@@ -5,13 +5,38 @@ import Grid from './Grid'
 const GameView = () => {
   const [grid, setGrid] = useState<number[][] | null>(null)
   const [gScore, setScore] = useState<number>(0)
+  const [debug, setDebug] = useState(false)
   let gameRef = useRef<Game | null>(null)
+  let containerRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     gameRef.current = new Game()
     let gridValue = gameRef.current.getGrid()
     setGrid([...gridValue])
     let gameScore = gameRef.current.getScore()
     setScore(gameScore)
+  }, [])
+
+  useEffect(() => {
+    if (containerRef.current !== null) {
+      containerRef.current.addEventListener('keydown', (event) => {
+        console.log(event)
+        if (event.code === 'ArrowUp') {
+          handleMove('up')
+        }
+        if (event.code === 'ArrowDown') {
+          handleMove('down')
+        }
+        if (event.code === 'ArrowLeft') {
+          handleMove('left')
+        }
+        if (event.code === 'ArrowRight') {
+          handleMove('right')
+        }
+      } )
+      containerRef.current.addEventListener('click', () => {
+        containerRef.current?.focus()
+      })
+    }
   }, [])
 
   const handleView = () => {
@@ -51,15 +76,20 @@ const GameView = () => {
   console.log('grid from gameview',{ grid })
 
   return (
-    <div>
+    <div ref={containerRef}>
       GameView - Score: {gScore} 
       <div>
         {(grid !== null) && <Grid grid={grid} />}
       </div>
-      <button onClick={handleView}>View</button>
-      <button onClick={handleRenderView}>refresh view</button>
-      <button onClick={handleSetAndRenderView}>setAndRefresh view</button>
-      <button onClick={handleRandomSquare}>setRandomSquare</button>
+      <button>Focus</button>
+      { debug &&
+        <div style={{display: 'flex', flexWrap: 'wrap', flexDirection: 'column', justifyContent: 'center', padding: '16px'}}>
+        <button onClick={handleView}>View</button>
+        <button onClick={handleRenderView}>refresh view</button>
+        <button onClick={handleSetAndRenderView}>setAndRefresh view</button>
+        <button onClick={handleRandomSquare}>setRandomSquare</button>
+      </div>
+      }
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px'}}>
         <button onClick={() => handleMove('up')}>Up</button>
         <div style={{display: 'flex', alignContent: 'center'}}>
@@ -68,6 +98,7 @@ const GameView = () => {
         </div>
         <button onClick={() => handleMove('down')}>Down</button>
       </div>
+      <button onClick={() => setDebug(prev => !prev)}>{debug ? 'HIDE' : 'SHOW'} DEBUG MENU</button>
 
     </div>
   )
