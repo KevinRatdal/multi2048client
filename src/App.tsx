@@ -3,6 +3,7 @@ import './App.css'
 import "xp.css/dist/98.css"
 import Window from './Window'
 import GameView from './GameView'
+import SockTest from './SockTest'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -16,12 +17,15 @@ function App() {
         <div>Test</div>
         <button>Click Me</button>
       </Window>  */}
-      <Window title={"Multi-2048"}>
+      {/* <Window title={"Multi-2048"}>
         <GameView />
       </Window> 
       <Window title={"Multi-2048"}>
         <GameView />
-      </Window> 
+      </Window>  */}
+      <Window title="socketIotest">
+        <SockTest />
+      </Window>
     </div>
   )
 }
