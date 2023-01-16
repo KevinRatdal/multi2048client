@@ -56,7 +56,7 @@ export class Game {
       return
     }
     const { x, y } = emptyPositions[Math.floor(emptyPositions.length * Math.random())]
-    const randomValue = Math.floor((2 * Math.random()) + 1) * 2
+    const randomValue = (Math.random() < 0.1) ? 4 : 2
     this.grid[x][y] = randomValue
   }
 
