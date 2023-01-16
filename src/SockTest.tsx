@@ -21,7 +21,7 @@ const SockTest = () => {
             setLastPong(new Date().toISOString())
         })
 
-        socket.on('receiveMsg', (message) => {
+        socket.on('receiveMessage', (message) => {
             setMsg(prev => prev + '---' + message)
         })
 
@@ -32,8 +32,12 @@ const SockTest = () => {
         }
     }, [])
 
-    const sendTest = (gameId: string, message: string) => {
-        socket.emit('clientTest', gameId, {message: message})
+    const sendTest = (message: string, gameId: string | undefined) => {
+        if (gameId) {
+            socket.emit('sendMessage', { message: message }, gameId)
+        } else {
+            socket.emit('sendMessage', { message: message })
+        }
     } 
     const joinRoom = (gameId: string) => {
         socket.emit('joinRoom', gameId,(res: string) => {
@@ -45,8 +49,8 @@ const SockTest = () => {
           <p>Connected: {'' + isConnected}</p>
           <p>Last pong: {lastPong || '-'}</p>
           <p>msg: {msg || '-'}</p>
-          <button onClick={() => sendTest('','testglob')}>Send test glob</button>
-          <button onClick={() => sendTest('ff33dd', 'testroommessage')}>Send test room</button>
+          <button onClick={() => sendTest('testglob', undefined)}>Send test glob</button>
+          <button onClick={() => sendTest('testroommessage', 'ff33dd')}>Send test room</button>
           <button onClick={() => joinRoom('ff33dd')}> joinRoom</button>
     </div>
   )

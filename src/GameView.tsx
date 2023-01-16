@@ -2,13 +2,21 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Game } from './Game'
 import Grid from './Grid'
 
-const GameView = () => {
+type GameView = {
+  sendGameState?: Function,
+  joinRoom?: Function
+}
+
+const GameView = ({sendGameState, joinRoom}: GameView) => {
   const [grid, setGrid] = useState<number[][] | null>(null)
   const [gScore, setScore] = useState<number>(0)
   const [debug, setDebug] = useState(false)
   const [gameId, setGameId] = useState(0)
+  const [roomId, setRoomId] = useState('')
+  
   let gameRef = useRef<Game | null>(null)
   let containerRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     gameRef.current = new Game()
     let gridValue = gameRef.current.getGrid()
@@ -40,11 +48,28 @@ const GameView = () => {
     }
   }, [])
 
+
+  useEffect(() => {
+    if (typeof sendGameState === 'function' && roomId !== '') {
+      sendGameState({grid: grid, gScore: gScore, player: 'player'}, roomId)
+    }
+  }, [grid, gScore, roomId])
+
+
+  const handleJoinRoom = (_roomId: string) => {
+    if (typeof joinRoom === 'function') {
+      joinRoom(_roomId)
+    }
+    setRoomId(_roomId)
+    
+  }
+
   const handleView = () => {
     if (gameRef.current !== null) {
       gameRef.current.viewGrid()
     }
   }
+
 
   const handleRenderView = () => {
     if (gameRef.current !== null) {
@@ -89,6 +114,7 @@ const GameView = () => {
         <button onClick={handleRenderView}>refresh view</button>
         <button onClick={handleSetAndRenderView}>setAndRefresh view</button>
         <button onClick={handleRandomSquare}>setRandomSquare</button>
+        <button onClick={() => handleJoinRoom('test1')}>join room test1</button>
       </div>
       }
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px'}}>
