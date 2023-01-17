@@ -9,7 +9,7 @@ import PreviewView from './PreviewView'
 
 
 
-const socket = io(import.meta.env.VITE_WS_ADD)
+const socket = io(import.meta.env.VITE_VERCEL_WS_ADD)
 
 function App() {
   const [count, setCount] = useState(0)

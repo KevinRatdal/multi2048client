@@ -2,7 +2,7 @@
 
 
 interface ImportMetaEnv {
-    readonly VITE_WS_ADD: string
+    readonly VITE_VERCEL_WS_ADD: string
     // more env variables...
 }
 
