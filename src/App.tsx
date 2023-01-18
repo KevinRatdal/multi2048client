@@ -7,14 +7,24 @@ import GameView from './GameView'
 import io from 'socket.io-client'
 import PreviewView from './PreviewView'
 
+type gameStateObject = {
+  sockId?: string,
+  pName?: string,
+  grid: number[][], 
+  gScore: number, 
+  player: string
+}
 
+type gameStateState = {
+  [sockId: string]: any
+}
 
 const socket = io(import.meta.env.VITE_VERCEL_WS_ADD)
 
 function App() {
   const [count, setCount] = useState(0)
   const [isConnected, setIsConnected] = useState(socket.connected)
-  const [gd, setgd] = useState<any>(null)
+  const [gd, setgd] = useState<gameStateState>({})
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -30,7 +40,10 @@ function App() {
     })
 
     socket.on('receiveGameStateUpdate', (gameStateObject) => {
-      setgd(gameStateObject)
+
+      setgd(prev => {
+        return {...prev, [gameStateObject.sockId]: gameStateObject}
+      })
     })
 
     return () => {
@@ -40,13 +53,13 @@ function App() {
     }
   }, [])
 
-  const joinRoom = (gameId: string) => {
-    socket.emit('joinRoom', gameId, (res: string) => {
+  const joinRoom = (gameId: string, pName: string) => {
+    socket.emit('joinRoom', gameId, pName, (res: string) => {
       console.log(res)
     })
   } 
   const sendGameState = (gameStateObject: any, gameId: string) => {
-    socket.emit('sendGameStateUpdate', gameStateObject, gameId, )
+    socket.emit('sendGameStateUpdate', gameStateObject, gameId)
     
   } 
 
@@ -63,9 +76,14 @@ function App() {
       <Window title={"Multi-2048"}>
         <GameView joinRoom={joinRoom} sendGameState={sendGameState}/>
       </Window> 
-      <Window title={"Multi-2048"}>
-        <PreviewView data={gd} />
-      </Window> 
+      {Object.keys(gd).map((socketId) => {
+        return (
+        <Window title={"Multi-2048"}>
+          <PreviewView data={gd[socketId]} />
+        </Window> 
+        )
+      })}
+      
       {/*<Window title="socketIotest">
         <SockTest /> 
     </Window> */}

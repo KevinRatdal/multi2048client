@@ -8,7 +8,7 @@ type PreviewView = {
 const PreviewView = ({ data }: PreviewView) => {
   return (
     <div>
-        <p>{data?.player} - Score: {data?.gScore}</p>
+        <p>{data?.pName} - Score: {data?.gScore}</p>
       { data?.grid && 
       <Grid grid={data?.grid} />}
     </div>

@@ -13,6 +13,7 @@ const GameView = ({sendGameState, joinRoom}: GameView) => {
   const [debug, setDebug] = useState(false)
   const [gameId, setGameId] = useState(0)
   const [roomId, setRoomId] = useState('')
+  const [currentPName, setCurrentPName] = useState('')
   
   let gameRef = useRef<Game | null>(null)
   let containerRef = useRef<HTMLDivElement>(null)
@@ -56,11 +57,13 @@ const GameView = ({sendGameState, joinRoom}: GameView) => {
   }, [grid, gScore, roomId])
 
 
-  const handleJoinRoom = (_roomId: string) => {
-    if (typeof joinRoom === 'function') {
-      joinRoom(_roomId)
+  const handleJoinRoom = (_roomId: string, pName: string) => {
+    if (roomId === '' && typeof joinRoom === 'function') {
+      joinRoom(_roomId, pName)
+      setCurrentPName(pName)
+      setRoomId(_roomId)
+      setDebug(false)
     }
-    setRoomId(_roomId)
     
   }
 
@@ -103,7 +106,7 @@ const GameView = ({sendGameState, joinRoom}: GameView) => {
 
   return (
     <div ref={containerRef}>
-      GameView - Score: {gScore} 
+      {currentPName} - {roomId} - Score: {gScore} 
       <div>
         {(grid !== null) && <Grid grid={grid} />}
       </div>
@@ -114,7 +117,7 @@ const GameView = ({sendGameState, joinRoom}: GameView) => {
         <button onClick={handleRenderView}>refresh view</button>
         <button onClick={handleSetAndRenderView}>setAndRefresh view</button>
         <button onClick={handleRandomSquare}>setRandomSquare</button>
-        <button onClick={() => handleJoinRoom('test1')}>join room test1</button>
+        <button disabled={!!(roomId)} onClick={() => handleJoinRoom('test1', `player_${Math.floor(Math.random()*99)}`)}>join room test1</button>
       </div>
       }
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px'}}>
