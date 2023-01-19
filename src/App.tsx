@@ -53,6 +53,14 @@ function App() {
     }
   }, [])
 
+  useEffect(() => {
+    window.addEventListener("keydown", function (e) {
+      if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+      }
+    }, false);
+  }, [])
+
   const joinRoom = (gameId: string, pName: string) => {
     socket.emit('joinRoom', gameId, pName, (res: string) => {
       console.log(res)
@@ -66,21 +74,10 @@ function App() {
   
   return (
     <div className="App">
-      {/* <Window title={"Multi-2048"}>
-        <p>There's so much room for activities!</p>
-      </Window>
-      <Window title={"Multi-2048"}>
-        <div>Test</div>
-        <button>Click Me</button>
-      </Window>  */}
-      <Window title={"Multi-2048"}>
-        <GameView joinRoom={joinRoom} sendGameState={sendGameState}/>
-      </Window> 
+      <GameView joinRoom={joinRoom} sendGameState={sendGameState}/>
       {Object.keys(gd).map((socketId) => {
         return (
-        <Window title={"Multi-2048"}>
-          <PreviewView data={gd[socketId]} />
-        </Window> 
+          <PreviewView key={gd.sockId} data={gd[socketId]} />
         )
       })}
       

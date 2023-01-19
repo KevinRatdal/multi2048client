@@ -1,27 +1,54 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Draggable from 'react-draggable'
+
 type Props = {
-    children?: React.ReactNode,
-    width?: Number,
-    title?: String
+  children?: React.ReactNode,
+  width?: Number,
+  title?: String,
+  zIndex?: number
+  onMinimize?: Function
+  onMaximise?: Function
+  onClose?: Function
 }
 
-const Window = ({children, width=300, title}: Props) => {
+const Window = ({ children, width = 300, title, zIndex, onMinimize, onMaximise, onClose }: Props) => {
+  const [isFocused, setIsFocused] = useState(false)
+  const handleIsFocused = () => {
+    setIsFocused(prev => !prev)
+  }
+
+  const handleOnMinimize = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    onMinimize?.(event)
+  }
+
+  const handleOnMaximize = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    onMaximise?.(event)
+  }
+
+  const handleOnClose = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    onClose?.(event)
+  }
+
+
   return (
-    <Draggable handle='.title-bar'>
-    <div className="window" style={{width: `${width}px`}}>
-      <div className="title-bar">
-        <div className="title-bar-text">{title}</div>
-        <div className="title-bar-controls">
-          <button aria-label="Minimize"></button>
-          <button aria-label="Maximize"></button>
-          <button aria-label="Close"></button>
+    <Draggable handle='.title-bar' bounds='parent'>
+      {/* <Draggable handle='.title-bar' bounds={{left: 0, top: 0}}> */}
+      <div className={"window"} style={{ width: `${width}px`, zIndex: zIndex }}>
+        <div className="title-bar" style={{ userSelect: 'none' }}>
+          <div className="title-bar-text" style={{cursor: 'unset'}}>{title}</div>
+          <div className="title-bar-controls">
+            <button onClick={handleOnMinimize} aria-label="Minimize"></button>
+            <button onClick={handleOnMaximize} aria-label="Maximize"></button>
+            <button onClick={handleOnClose} aria-label="Close"></button>
+          </div>
+        </div>
+        <div className="window-body">
+          {children}
         </div>
       </div>
-      <div className="window-body">
-        {children}
-      </div>
-    </div>
     </Draggable>
   )
 }

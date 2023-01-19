@@ -39,12 +39,47 @@ export const Bloc = ({value}: Bloc) => {
   }
 
   return (
-    <div style={{border: '1px solid black', height: '48px', width: '48px', display: 'flex', alignItems: "center", justifyContent: 'center'}}>
-      <p className='column' style={{ fontSize: fs, margin: '0px' }} >{value}</p>
+    <div style={blocStyle(value)}>
+      <p className='column' style={{ fontSize: fs, margin: '0px' }} >{value !== 0 && value}</p>
 
     </div>
   )
 }
+
+const blocStyle = (v: number) => ({ 
+  boxShadow: 'inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px grey',
+  // border: '1px solid black', 
+  color: blocCol[v],
+  height: '48px', 
+  width: '48px', 
+  display: 'flex', 
+  alignItems: "center", 
+  justifyContent: 'center' 
+})
+
+
+type tblocCol = {
+  [key: number]: string
+}
+
+const blocCol: tblocCol = {
+ 0: '',
+ 2: 'gray',
+ 4: 'black',
+ 8: 'green',
+ 16: 'blue',
+ 32: 'seagreen',
+ 64: 'purple',
+  128: 'navy',
+  256: 'mediumvioletred',
+  512: 'maroon',
+  1024: 'firebrick',
+  2048: 'red',
+  4096: 'purple',
+  8192: 'purple',
+  16384: 'purple',
+}
+
 
 type tfontSizes = {
   [key: string]: string
