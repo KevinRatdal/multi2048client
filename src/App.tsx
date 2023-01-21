@@ -6,6 +6,7 @@ import GameView from './GameView'
 // import SockTest from './SockTest'
 import io from 'socket.io-client'
 import PreviewView from './PreviewView'
+import Highscores from './Highscores'
 
 type gameStateObject = {
   sockId?: string,
@@ -80,6 +81,7 @@ function App() {
           <PreviewView key={gd.sockId} data={gd[socketId]} />
         )
       })}
+      <Highscores/>
       
       {/*<Window title="socketIotest">
         <SockTest /> 
