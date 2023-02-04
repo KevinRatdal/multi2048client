@@ -9,9 +9,10 @@ type Props = {
   onMinimize?: Function
   onMaximise?: Function
   onClose?: Function
+  windowStyle?: React.CSSProperties | undefined
 }
 
-const Window = ({ children, width = 300, title, zIndex, onMinimize, onMaximise, onClose }: Props) => {
+const Window = ({ children, width = 300, title, zIndex, onMinimize, onMaximise, onClose, windowStyle }: Props) => {
   const [isFocused, setIsFocused] = useState(false)
   const handleIsFocused = () => {
     setIsFocused(prev => !prev)
@@ -36,7 +37,7 @@ const Window = ({ children, width = 300, title, zIndex, onMinimize, onMaximise, 
   return (
     <Draggable handle='.title-bar' bounds='parent'>
       {/* <Draggable handle='.title-bar' bounds={{left: 0, top: 0}}> */}
-      <div className={"window"} style={{ width: `${width}px`, zIndex: zIndex }}>
+      <div className={"window"} style={{ width: `${width}px`, zIndex: zIndex, ...windowStyle }}>
         <div className="title-bar" style={{ userSelect: 'none' }}>
           <div className="title-bar-text" style={{cursor: 'unset'}}>{title}</div>
           <div className="title-bar-controls">

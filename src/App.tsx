@@ -7,6 +7,7 @@ import GameView from './GameView'
 import io from 'socket.io-client'
 import PreviewView from './PreviewView'
 import Highscores from './Highscores'
+import NewGameView from './NewGameView'
 
 type gameStateObject = {
   sockId?: string,
@@ -75,6 +76,7 @@ function App() {
   
   return (
     <div className="App">
+      <NewGameView/>
       <GameView joinRoom={joinRoom} sendGameState={sendGameState}/>
       {Object.keys(gd).map((socketId) => {
         return (
