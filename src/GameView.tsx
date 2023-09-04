@@ -5,10 +5,11 @@ import Window from './Window'
 
 type GameView = {
   sendGameState?: Function,
+  finishGame?: Function,
   joinRoom?: Function
 }
 
-const GameView = ({ sendGameState, joinRoom }: GameView) => {
+const GameView = ({ sendGameState, joinRoom, finishGame }: GameView) => {
   const [grid, setGrid] = useState<number[][] | null>(null)
   const [gScore, setScore] = useState<number>(0)
   const [debug, setDebug] = useState(false)
@@ -53,7 +54,7 @@ const GameView = ({ sendGameState, joinRoom }: GameView) => {
 
   useEffect(() => {
     if (typeof sendGameState === 'function' && roomId !== '') {
-      sendGameState({ grid: grid, gScore: gScore, player: 'player' }, roomId)
+      sendGameState({ grid: grid, gScore: gScore, player: currentPName }, roomId)
     }
   }, [grid, gScore, roomId])
 
@@ -103,6 +104,13 @@ const GameView = ({ sendGameState, joinRoom }: GameView) => {
       handleRenderView()
     }
   }
+  const handleFinishGame = () => {
+    finishGame?.({ grid: grid, gScore: gScore, player: currentPName }, roomId)
+    // send the finish game to the api
+    // disable movement and freeze game
+    // hide finish button?
+  }
+
   console.log('grid from gameview', { grid })
 
   return (
@@ -133,6 +141,7 @@ const GameView = ({ sendGameState, joinRoom }: GameView) => {
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
           <button onDoubleClick={() => setDebug(prev => !prev)}>DEBUG</button>
+          <button onClick={handleFinishGame}>Finish</button>
           <button onClick={() => setGameId(prevGameId => prevGameId + 1)}> Restart</button>
         </div>
       </div>

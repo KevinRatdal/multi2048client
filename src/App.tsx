@@ -14,7 +14,8 @@ type gameStateObject = {
   pName?: string,
   grid: number[][], 
   gScore: number, 
-  player: string
+  player: string,
+  finished?: boolean
 }
 
 type gameStateState = {
@@ -48,6 +49,16 @@ function App() {
       })
     })
 
+
+    socket.on('playerFinished', (gameStateObject) => {
+
+      setgd(prev => {
+        return {...prev, [gameStateObject.sockId]: gameStateObject}
+      })
+    })
+
+    
+
     return () => {
       socket.off('connect')
       socket.off('disconnect')
@@ -72,12 +83,16 @@ function App() {
     socket.emit('sendGameStateUpdate', gameStateObject, gameId)
     
   } 
+  const finishGame = (gameStateObject: any, gameId: string) => {
+    socket.emit('finishGame', gameStateObject, gameId)
+    
+  } 
 
   
   return (
     <div className="App">
       <NewGameView/>
-      <GameView joinRoom={joinRoom} sendGameState={sendGameState}/>
+      <GameView joinRoom={joinRoom} sendGameState={sendGameState} finishGame={finishGame}/>
       {Object.keys(gd).map((socketId) => {
         return (
           <PreviewView key={gd.sockId} data={gd[socketId]} />

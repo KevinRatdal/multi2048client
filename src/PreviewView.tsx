@@ -13,6 +13,7 @@ const PreviewView = ({ data }: PreviewView) => {
         <h6 style={{ marginBlockStart: '1em', marginBlockEnd: '0.5em', fontSize: '1.3em' }}>Score: {data.gScore}</h6>
         {data?.grid &&
           <Grid grid={data?.grid} />}
+        {data?.finished && <p>Finished</p>}
       </div>
     </Window>
   )
