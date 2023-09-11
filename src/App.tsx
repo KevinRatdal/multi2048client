@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import "xp.css/dist/98.css"
-import Window from './Window'
-import GameView from './GameView'
+import Window from './components/Window'
+import GameView from './views/GameView'
 // import SockTest from './SockTest'
 import io from 'socket.io-client'
-import PreviewView from './PreviewView'
-import Highscores from './Highscores'
-import NewGameView from './NewGameView'
+import PreviewView from './views/PreviewView/PreviewView'
+import Highscores from './views/HighScoreView'
+import NewGameView from './views/NewGameView'
 
 type gameStateObject = {
   sockId?: string,

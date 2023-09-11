@@ -1,14 +1,14 @@
-
-
 export class Game {
   score: number;
   grid: number[][];
   gridSize: number;
   previousGrid?: number[][];
+  isFinished?: Boolean;
 
   constructor(gridSize: number = 4) {
     this.score = 0
     this.gridSize = gridSize
+    this.isFinished = false
     this.grid = [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
@@ -66,6 +66,18 @@ export class Game {
     const { x, y } = emptyPositions[Math.floor(emptyPositions.length * Math.random())]
     const randomValue = (Math.random() < 0.1) ? 4 : 2
     this.grid[x][y] = randomValue
+  }
+
+  _checkMovesAvailable() {
+    // check if grid is full
+    for (let row of this.grid) {
+      for (let col of row) {
+        if (col === 0) {
+          return true
+        }
+      }
+    }
+    
   }
 
   move(direction: string) {

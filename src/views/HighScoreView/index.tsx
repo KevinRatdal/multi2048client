@@ -1,4 +1,4 @@
-import Window from "./Window"
+import Window from "../../components/Window"
 import React, { useEffect, useState } from 'react'
 
 type Highscore = {
@@ -6,7 +6,7 @@ type Highscore = {
   score: Number
 }
 
-const Highscores = () => {
+const HighScoreView = () => {
   const [highscores, setHighscores] = useState<Highscore[]>([])
   const [fetching, setFetching] = useState(false)
   useEffect(() => {
@@ -60,4 +60,4 @@ const Highscores = () => {
   )
 }
 
-export default Highscores
+export default HighScoreView

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Game } from './Game'
-import Grid from './Grid'
-import Window from './Window'
+import { Game } from '../../logic/Game'
+import Grid from '../../components/Grid'
+import Window from '../../components/Window'
 
 type GameView = {
   sendGameState?: Function,

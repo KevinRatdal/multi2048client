@@ -4,8 +4,10 @@
   "version": "0.2.2",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "bunx --bun vite",
+    "devnode": "vite",
+    "build": "bunx --bun vite build",
+    "buildL": "tsc && vite build",
     "preview": "vite preview",
     "postversion": "git push && git push --tags"
   },
@@ -21,6 +23,7 @@
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react-swc": "^3.3.2",
     "typescript": "^5.2.2",
-    "vite": "^4.4.9"
+    "vite": "^4.4.9",
+    "vite-tsconfig-paths": "^4.2.1"
   }
 }

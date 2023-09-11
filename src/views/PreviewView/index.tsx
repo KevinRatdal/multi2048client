@@ -1,6 +1,6 @@
 import React from 'react'
-import Grid from './Grid'
-import Window from './Window'
+import Grid from '../../components/Grid'
+import Window from '../../components/Window'
 
 type PreviewView = {
   data: any
