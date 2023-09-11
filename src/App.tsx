@@ -3,9 +3,8 @@ import './App.css'
 import "xp.css/dist/98.css"
 import Window from './components/Window'
 import GameView from './views/GameView'
-// import SockTest from './SockTest'
 import io from 'socket.io-client'
-import PreviewView from './views/PreviewView/PreviewView'
+import PreviewView from './views/PreviewView'
 import Highscores from './views/HighScoreView'
 import NewGameView from './views/NewGameView'
 
