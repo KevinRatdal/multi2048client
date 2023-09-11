@@ -12,6 +12,7 @@ type GameView = {
 const GameView = ({ sendGameState, joinRoom, finishGame }: GameView) => {
   const [grid, setGrid] = useState<number[][] | null>(null)
   const [gScore, setScore] = useState<number>(0)
+  const [isFinished, setIsFinished] = useState<Boolean>(false)
   const [debug, setDebug] = useState(false)
   const [gameId, setGameId] = useState(0)
   const [roomId, setRoomId] = useState('')
@@ -21,7 +22,8 @@ const GameView = ({ sendGameState, joinRoom, finishGame }: GameView) => {
   let containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    gameRef.current = new Game()
+    gameRef.current = new Game(4)
+    console.log('test',gameRef.current?.initGrid())
     let gridValue = gameRef.current.getGrid()
     setGrid([...gridValue])
     let gameScore = gameRef.current.getScore()
@@ -54,9 +56,13 @@ const GameView = ({ sendGameState, joinRoom, finishGame }: GameView) => {
 
   useEffect(() => {
     if (typeof sendGameState === 'function' && roomId !== '') {
-      sendGameState({ grid: grid, gScore: gScore, player: currentPName }, roomId)
+      if (isFinished) {
+        finishGame?.({ grid: grid, gScore: gScore, player: currentPName }, roomId)
+      } else {
+        sendGameState({ grid: grid, gScore: gScore, player: currentPName }, roomId)
+      }
     }
-  }, [grid, gScore, roomId])
+  }, [grid, gScore, roomId, isFinished])
 
 
   const handleJoinRoom = (_roomId: string, pName: string) => {
@@ -83,9 +89,12 @@ const GameView = ({ sendGameState, joinRoom, finishGame }: GameView) => {
       setGrid([...gridValue])
       let gameScore = gameRef.current.getScore()
       setScore(gameScore)
+      let isFin = gameRef.current.getIsFinished()
+      setIsFinished(isFin)
     }
   }
   const handleSetAndRenderView = () => {
+    //DEBUG
     if (gameRef.current !== null) {
       gameRef.current._setRandomSquare()
       let gridValue = gameRef.current.getGrid()
@@ -93,13 +102,14 @@ const GameView = ({ sendGameState, joinRoom, finishGame }: GameView) => {
     }
   }
   const handleRandomSquare = () => {
+    //DEBUG
     if (gameRef.current !== null) {
       gameRef.current._setRandomSquare()
     }
   }
 
   const handleMove = (direction: string) => {
-    if (gameRef.current !== null) {
+    if (gameRef.current !== null && !isFinished) {
       gameRef.current.move(direction)
       handleRenderView()
     }
@@ -116,7 +126,7 @@ const GameView = ({ sendGameState, joinRoom, finishGame }: GameView) => {
   return (
     <Window title={`Multi-2048 - ${currentPName} - ${roomId}`} zIndex={100}>
       <div ref={containerRef} style={{userSelect: 'none'}}>
-        <h6 style={{ marginBlockStart: '1em',marginBlockEnd: '0.5em', fontSize: '1.3em'}}>Score: {gScore}</h6>
+        <h6 style={{ marginBlockStart: '1em',marginBlockEnd: '0.5em', fontSize: '1.3em'}}>Score: {gScore} {isFinished && 'Finished'}</h6>
         <div>
           {(grid !== null) && <Grid grid={grid} />}
         </div>
@@ -128,6 +138,7 @@ const GameView = ({ sendGameState, joinRoom, finishGame }: GameView) => {
             <button onClick={handleRenderView}>refresh view</button>
             <button onClick={handleSetAndRenderView}>setAndRefresh view</button>
             <button onClick={handleRandomSquare}>setRandomSquare</button>
+            <button onClick={handleFinishGame}>Finish</button>
             <button disabled={!!(roomId)} onClick={() => handleJoinRoom('test1', `player_${Math.floor(Math.random() * 99)}`)}>join room test1</button>
           </div>
         }
@@ -141,7 +152,7 @@ const GameView = ({ sendGameState, joinRoom, finishGame }: GameView) => {
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
           <button onDoubleClick={() => setDebug(prev => !prev)}>DEBUG</button>
-          <button onClick={handleFinishGame}>Finish</button>
+          
           <button onClick={() => setGameId(prevGameId => prevGameId + 1)}> Restart</button>
         </div>
       </div>

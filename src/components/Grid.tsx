@@ -1,6 +1,6 @@
 
 type Grid = {
-  grid: number[][]
+  grid?: number[][]
 }
 
 
@@ -8,7 +8,7 @@ const Grid = ({ grid }: Grid) => {
   console.log({ grid })
   return (
     <div style={{ padding: '8px', display: "flex", flexDirection: "column", gap: '4px' }}>
-      {grid.map((row: number[], x) => {
+      {grid?.map((row: number[], x) => {
         return (
             <div className='row' style={{ display: 'flex', gap: '4px', justifyContent: 'center' }} key={`${x}-${row.join('')}`}>
               {row.map((val: number, y) => {

@@ -2,27 +2,22 @@ export class Game {
   score: number;
   grid: number[][];
   gridSize: number;
-  previousGrid?: number[][];
-  isFinished?: Boolean;
+  isFinished: Boolean;
 
   constructor(gridSize: number = 4) {
     this.score = 0
     this.gridSize = gridSize
     this.isFinished = false
-    this.grid = [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
-    ]
-    // this.grid = [
-    //   [0, 2, 4, 8],
-    //   [16, 32, 64, 128],
-    //   [256, 512, 1024, 2048],
-    //   [4096, 8192, 16384, 32768]
-    // ]
-    this.previousGrid
+    this.grid = this.initGrid()
     this.start()
+  }
+
+  initGrid() {
+    let newGrid = []
+    for (let x = 0; x < this.gridSize; x++) {
+      newGrid[x] = new Array(this.gridSize).fill(0)
+    }
+    return newGrid
   }
 
   start() {
@@ -30,8 +25,14 @@ export class Game {
     const randomY = Math.floor(this.gridSize * Math.random())
     // const startVal = Math.floor((2 * Math.random()) + 1 ) * 2
     const startVal = 2
-    console.log({ randomX, randomY, startVal })
     this.grid[randomX][randomY] = startVal
+  }
+
+  restart() {
+    this.score = 0
+    this.isFinished = false
+    this.grid = this.initGrid()
+    this.start()
   }
 
   viewGrid() {
@@ -44,6 +45,10 @@ export class Game {
 
   getScore() {
     return this.score
+  }
+
+  getIsFinished() {
+    return this.isFinished
   }
 
   _getEmptyPositions(): any[] {
@@ -68,19 +73,37 @@ export class Game {
     this.grid[x][y] = randomValue
   }
 
-  _checkMovesAvailable() {
+  _checkFinishState() {
     // check if grid is full
     for (let row of this.grid) {
       for (let col of row) {
         if (col === 0) {
-          return true
+          this.isFinished = false
+          return
         }
       }
     }
+    // Board is full
+    for (let x = 0; x < this.gridSize; x++) {
+      for (let y = 0; y < this.gridSize; y++) {
+        const n = this.grid[x][y]
+        const under = this.grid?.[x + 1]?.[y]
+        const right = this.grid?.[x]?.[y + 1]
+        if (n === under || n === right) {
+          this.isFinished = false
+          return
+        }
+      }
+    }
+    this.isFinished = true
     
   }
 
   move(direction: string) {
+    console.log('moving', direction, this.isFinished)
+    if (this.isFinished) {
+      return
+    }
     switch (direction) {
       case 'up':
         if (this._handleMoveUp()) {
@@ -106,6 +129,7 @@ export class Game {
       default:
         break;
     }
+    this._checkFinishState()
   }
 
   _handleMoveUp() {

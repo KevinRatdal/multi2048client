@@ -39,7 +39,7 @@ const HighScoreView = () => {
         <ul className='tree-view' style={{maxHeight: '353px', overflow: 'auto'}}>
           {highscores.map((hs, i) => {
             return (
-              <li key={hs.username}>
+              <li key={hs?.username+'-'+i}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '8px' }}>
                     <p>
                       <span style={{paddingRight: '8px'}}>{i+1}.</span>{hs.username}
