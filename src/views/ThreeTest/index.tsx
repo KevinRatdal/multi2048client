@@ -4,18 +4,29 @@ import * as THREE from 'three'
 import Window from '../../components/Window'
 import { Line, MeshReflectorMaterial, OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import { ChromaticAberration, EffectComposer, Pixelation, Scanline } from '@react-three/postprocessing'
+import { Leva, useControls } from 'leva'
 
 
 const ThreeTest = () => {
+  const { granularity } = useControls({ granularity: {
+    value: 3,
+    min: 0,
+    max: 20,
+    step: 1
+  } })
 
   
   return (
     <Window title={`Three test `} zIndex={600} width={700} >
       <Suspense fallback={null}>
-
+        <Leva
+          oneLineLabels // default = false, alternative layout for labels, with labels and fields on separate rows
+          hideTitleBar={true} // default = false, hides the GUI header
+        />
  
         <div style={{ height: '400px', padding: '2px', boxShadow: 'inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a'}}>
         <Canvas>
+          
           <color args={[255, 255, 255]} attach="background" />
           <ambientLight intensity={0.5} />
           <Light brightness={50} color={'white'} />
@@ -35,7 +46,7 @@ const ThreeTest = () => {
           <Box position={[1.2, 0.6, 0]} castShadow/>
           <Ground></Ground>
           <EffectComposer>
-            <Pixelation granularity={3} ></Pixelation>
+            <Pixelation granularity={granularity} ></Pixelation>
             {/* <ChromaticAberration
               offset={[0.004, 0.004]} // color offset
             /> */}
