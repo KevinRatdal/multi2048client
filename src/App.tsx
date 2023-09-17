@@ -7,7 +7,7 @@ import io from 'socket.io-client'
 import PreviewView from './views/PreviewView'
 import Highscores from './views/HighScoreView'
 import NewGameView from './views/NewGameView'
-
+import ThreeTest from './views/ThreeTest'
 type gameStateObject = {
   sockId?: string,
   pName?: string,
@@ -98,7 +98,7 @@ function App() {
         )
       })}
       <Highscores/>
-      
+      <ThreeTest></ThreeTest>
       {/*<Window title="socketIotest">
         <SockTest /> 
     </Window> */}

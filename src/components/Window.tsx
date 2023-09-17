@@ -4,6 +4,7 @@ import Draggable from 'react-draggable'
 type Props = {
   children?: React.ReactNode,
   width?: Number,
+  height?: Number,
   title?: String,
   zIndex?: number
   onMinimize?: Function
@@ -14,12 +15,14 @@ type Props = {
 
 const Window = ({ children, width = 300, title, zIndex, onMinimize, onMaximise, onClose, windowStyle }: Props) => {
   const [isFocused, setIsFocused] = useState(false)
+  const [minimized, setMinimized] = useState(false)
   const handleIsFocused = () => {
     setIsFocused(prev => !prev)
   }
 
   const handleOnMinimize = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
+    setMinimized(prev => !prev)
     onMinimize?.(event)
   }
 
@@ -46,7 +49,7 @@ const Window = ({ children, width = 300, title, zIndex, onMinimize, onMaximise, 
             <button onClick={handleOnClose} aria-label="Close"></button>
           </div>
         </div>
-        <div className="window-body">
+        <div className="window-body" style={minimized ? {display: 'none'} :{}}>
           {children}
         </div>
       </div>
