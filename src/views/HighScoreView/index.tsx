@@ -15,7 +15,7 @@ const HighScoreView = () => {
 
   const fetchHighScores = (delay=true) => {
     setFetching(true)
-    fetch('https://www.ratdalservices.no/highscore')
+    fetch('https://www.ratdalservices.no/api/highscore')
       .then((res) => res.json())
       .then((data) => {
         console.log(data.data)

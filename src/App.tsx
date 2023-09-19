@@ -21,13 +21,13 @@ type gameStateState = {
   [sockId: string]: any
 }
 
-const socket = io(import.meta.env.VITE_VERCEL_WS_ADD)
+const socket = io(import.meta.env.VITE_VERCEL_WS_ADD, { path: '/api/socket.io'})
 
 function App() {
   const [count, setCount] = useState(0)
   const [isConnected, setIsConnected] = useState(socket.connected)
   const [gd, setgd] = useState<gameStateState>({})
-
+  console.log(import.meta.env.VITE_VERCEL_WS_ADD)
   useEffect(() => {
     socket.on('connect', () => {
       setIsConnected(true)
